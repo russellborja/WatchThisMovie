@@ -1,0 +1,57 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.russellborja.watchthismovie.fragments.SelectionFragment">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/listview_selected">
+        <ImageView
+            android:src="@drawable/draganddrop"
+            android:id="@+id/first_selection"
+            android:padding="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:tag="blank"/>
+        <ImageView
+            android:src="@drawable/draganddrop"
+            android:id="@+id/second_selection"
+            android:padding="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:tag="blank"/>
+        <ImageView
+            android:src="@drawable/draganddrop"
+            android:id="@+id/third_selection"
+            android:padding="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:tag="blank"/>
+        <ImageView
+            android:src="@drawable/draganddrop"
+            android:id="@+id/fourth_selection"
+            android:padding="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:tag="blank"/>
+        <Button
+            android:id="@+id/reset_button"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="@string/reset"/>
+        <Button
+            android:id="@+id/randomize_button"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="@string/randomize"/>
+    </LinearLayout>
+
+</FrameLayout>

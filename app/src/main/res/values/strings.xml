@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Watch This Movie</string>
+    <string name="in_theatres">In Theatres</string>
+    <string name="on_dvd">On DVD</string>
+    <string name="action_settings">Settings</string>
+    <string name="reset">Reset</string>
+    <string name="randomize">Randomize</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="action_refresh">Refresh</string>
+
+</resources>
