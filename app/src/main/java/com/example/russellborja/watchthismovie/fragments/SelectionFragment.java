@@ -49,7 +49,27 @@ public class SelectionFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState){
         // Set button click listeners
         Button reset = (Button) getActivity().findViewById(R.id.reset_button);
+        Button randomize = (Button) getActivity().findViewById(R.id.randomize_button);
+
         reset.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                LinearLayout linearLayout = (LinearLayout) getActivity().findViewById(R.id.listview_selected);
+                int childViewcount = linearLayout.getChildCount();
+
+                // find first available empty container
+                for(int i=childViewcount; i >= 0; i--){
+                    View view = linearLayout.getChildAt(i);
+                    if(view instanceof ImageView){
+                        view.setTag("blank");
+                        ((ImageView) view).setImageResource(R.drawable.draganddrop);
+
+                    }
+                }
+                Utils.removeAllSelections();
+            }
+        });
+
+        randomize.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 LinearLayout linearLayout = (LinearLayout) getActivity().findViewById(R.id.listview_selected);
                 int childViewcount = linearLayout.getChildCount();
