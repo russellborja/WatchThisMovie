@@ -201,19 +201,10 @@ public class FetchMovieData extends AsyncTask<String, Void, Cursor> {
                         + MovieContract.MovieEntry.TABLE_NAME + " WHERE movie_title=\"" + title +"\"";
                 Cursor q = db.rawQuery(queryStr,null);
 
-                //Set details in movieDetails object
-//                movieDetails.setmTitle(title);
-//                movieDetails.setmReleaseDate(releaseDate);
-//                movieDetails.setmRating(rating);
+
 
                 if(q.getCount() == 0) {
-
-                    //Set bitmap image in movieDetails object
-                    /*if (bitmapUrl.equals("null"))
-                        movieDetails.setMoviePoster(null);
-                    else
-                        movieDetails.setMoviePoster(TMDB_IMAGE_URL + movieInfo.getString(POSTER_PATH));*/
-
+                    // populate database with movie details
                     ContentValues values = new ContentValues();
                     values.put(MovieContract.MovieEntry.COLUMN_MOVIE_TITLE, title);
                     values.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, releaseDate);
@@ -235,8 +226,6 @@ public class FetchMovieData extends AsyncTask<String, Void, Cursor> {
                 }
 
 
-                //Add to arraylist
-                //movieDetailsList.add(movieDetails);
 
             }
 

@@ -70,15 +70,6 @@ public class MovieTheatresFragment extends Fragment {
                     updateSelection(Utils.getBitmapFromByteArray(cursor.getBlob(MovieContract.COL_IMAGE)));
 
                 }
-                /*if(cursor.getInt(MovieContract.COL_IS_SELECTED) == 0) {
-                    updateSelection(Utils.getBitmapFromByteArray(cursor.getBlob(MovieContract.COL_IMAGE)));
-                    ContentValues cv = new ContentValues();
-                    cv.put(MovieContract.MovieEntry.COLUMN_IS_SELECTED, 1);
-                    db.update(MovieContract.MovieEntry.TABLE_NAME, cv, MovieContract.MovieEntry.COLUMN_MOVIE_TITLE
-                            + "= ?", new String[]{cursor.getString(MovieContract.COL_MOVIE_TITLE)});
-                    //item.setmSelected(true);
-                    //mMovieAdapter.add(item);
-                }*/
                 else{
                     Toast.makeText(getActivity().getApplicationContext(), "Already Selected",
                             Toast.LENGTH_SHORT).show();
@@ -86,9 +77,6 @@ public class MovieTheatresFragment extends Fragment {
             }
         });
 
-        //updateMovieList();
-        //MovieDbHelper dbHelper = new MovieDbHelper(getActivity().getApplicationContext());
-        //dbHelper.getMovieTitle();
 
         db.close();
         return rootView;
@@ -143,14 +131,10 @@ public class MovieTheatresFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
-            Log.v(LOG_TAG, "hit refresh");
             updateMovieList();
             return true;
         }

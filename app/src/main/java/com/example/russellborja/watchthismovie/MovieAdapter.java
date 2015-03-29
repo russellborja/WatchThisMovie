@@ -39,37 +39,6 @@ public class MovieAdapter extends CursorAdapter {
         }
     }
 
-    /*@Override
-    public View getView(int position, View convertView, ViewGroup parent){
-        MovieDetails movieDetails = getItem(position);
-
-        if(convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_movie,parent, false);
-        }
-        TextView titleTextView = (TextView) convertView.findViewById(R.id.list_movies_textview);
-        TextView dateTextView = (TextView) convertView.findViewById(R.id.list_movies_date_textview);
-        TextView ratingTextView = (TextView) convertView.findViewById(R.id.list_movies_rating_textview);
-        ImageView imageView = (ImageView) convertView.findViewById(R.id.list_movies_imageview);
-
-        String movieTitle = movieDetails.getmTitle();
-        String releaseDate = movieDetails.getmReleaseDate();
-        double rating = movieDetails.getmRating();
-        Bitmap moviePoster = movieDetails.getMoviePoster();
-
-        //Load textview and imageview
-        titleTextView.setText(movieTitle);
-        titleTextView.setTypeface(null, Typeface.BOLD); //Bold title
-        dateTextView.setText("Released: " + releaseDate);
-        ratingTextView.setText("Rating: " + rating);
-
-        if(moviePoster == null) {
-            imageView.setImageResource(R.drawable.poster_not_available);
-        }else {
-            imageView.setImageBitmap(movieDetails.getMoviePoster());
-        }
-
-        return convertView;
-    }*/
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -85,7 +54,7 @@ public class MovieAdapter extends CursorAdapter {
         String releaseDate = cursor.getString(MovieContract.COL_RELEASE_DATE);
         double rating = cursor.getDouble(MovieContract.COL_RATING);
 
-        //Bitmap moviePoster = BitmapFactory.decodeByteArray(cursor.getBlob(COL_IMAGE), 0, cursor.getBlob(COL_IMAGE).length);
+
 
         Log.v(LOG_TAG, "Movie title: " + movieTitle);
         for(String column: cursor.getColumnNames()) {

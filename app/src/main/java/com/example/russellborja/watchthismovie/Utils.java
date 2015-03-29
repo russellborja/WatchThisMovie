@@ -63,7 +63,6 @@ public class Utils {
                 e.printStackTrace();
             }
         }
-        //Log.v(LOG_TAG, data.toString());
         return data;
     }
 
