@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 import com.example.russellborja.watchthismovie.fragments.MovieDVDFragment;
 import com.example.russellborja.watchthismovie.fragments.MovieTheatresFragment;
@@ -26,7 +27,8 @@ public class MainActivity extends ActionBarActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        FrameLayout layoutMain = (FrameLayout) findViewById( R.id.main_frame_layout);
+        layoutMain.getForeground().setAlpha( 0);
 
 
         viewpager = (ViewPager) findViewById(R.id.pager);
