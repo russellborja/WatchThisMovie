@@ -37,6 +37,16 @@ public class Utils {
         return true;
     }
 
+    public static int getIntSelected(){
+        int counter=0;
+        for(int i=0; i< selectedViews.length; i++){
+            if(!(selectedViews[i].equals(""))){
+                counter++;
+            }
+        }
+        return counter;
+    }
+
 
     public static byte[] getByteArrayFromUrl(String urlString){
         Bitmap bitmap = null;

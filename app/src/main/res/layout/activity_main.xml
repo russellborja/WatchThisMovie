@@ -1,10 +1,16 @@
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity"
+    android:id="@+id/main_frame_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:foreground="@drawable/shape_window_dim"
+     >
+<LinearLayout
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
     android:orientation="horizontal">
     <android.support.v4.view.ViewPager
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -36,3 +42,4 @@
         android:layout_weight="0.3"
         android:layout_height="match_parent"/>
 </LinearLayout>
+</FrameLayout>
