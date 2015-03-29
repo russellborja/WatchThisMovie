@@ -1,8 +1,6 @@
 package com.example.russellborja.watchthismovie.fragments;
 
 import android.app.Activity;
-import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,8 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.russellborja.watchthismovie.R;
-import com.example.russellborja.watchthismovie.data.MovieContract;
-import com.example.russellborja.watchthismovie.data.MovieDbHelper;
+import com.example.russellborja.watchthismovie.Utils;
 
 
 /**
@@ -31,7 +28,7 @@ public class SelectionFragment extends Fragment {
 
     private OnSelectionClickedListener mListener;
     private final String LOG_TAG = "SelectionFragment";
-    private final int SELECTION_NUMBER = 4; //number of selection boxes
+    public final int SELECTION_NUMBER = 4; //number of selection boxes
     //private boolean[] isBlank = new boolean[SELECTION_NUMBER];
 
     public SelectionFragment() {
@@ -66,32 +63,12 @@ public class SelectionFragment extends Fragment {
 
                     }
                 }
-                resetmSelected();
+                Utils.removeAllSelections();
             }
         });
     }
 
-    // resets mSelected flags on movie items
-    public void resetmSelected(){
-        MovieDbHelper dbHelper = new MovieDbHelper(getActivity().getApplicationContext());
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(MovieContract.MovieEntry.COLUMN_IS_SELECTED, 0);
-        db.update(MovieContract.MovieEntry.TABLE_NAME, cv, null, null);
-        db.close();
-        /*ListView lv = (ListView) getActivity().findViewById(R.id.listview_movies);
-        for(int i = 0; i < lv.getAdapter().getCount(); i++){
-            MovieDetails item = (MovieDetails) lv.getAdapter().getItem(i);
-            item.setmSelected(false);
-        }
 
-        ListView dv = (ListView) getActivity().findViewById(R.id.listview_movies_dvd);
-        for(int i = 0; i < dv.getAdapter().getCount(); i++){
-            MovieDetails item = (MovieDetails) dv.getAdapter().getItem(i);
-            item.setmSelected(false);
-        }*/
-
-    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -104,7 +81,12 @@ public class SelectionFragment extends Fragment {
     public void updateSelectionContainers(Bitmap poster){
         ImageView emptyImageView = (ImageView) getAvailableView();
         if (emptyImageView != null){
-            emptyImageView.setImageBitmap(poster);
+            if(poster == null){
+                emptyImageView.setImageResource(R.drawable.poster_not_available);
+            }
+            else {
+                emptyImageView.setImageBitmap(poster);
+            }
             emptyImageView.setTag("filled");
         }
 

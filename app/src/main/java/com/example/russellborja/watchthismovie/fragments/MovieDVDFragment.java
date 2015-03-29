@@ -18,8 +18,9 @@ import android.widget.Toast;
 
 import com.example.russellborja.watchthismovie.FetchMovieData;
 import com.example.russellborja.watchthismovie.MovieAdapter;
-import com.example.russellborja.watchthismovie.MovieDetails;
 import com.example.russellborja.watchthismovie.R;
+import com.example.russellborja.watchthismovie.Utils;
+import com.example.russellborja.watchthismovie.data.MovieContract;
 import com.example.russellborja.watchthismovie.data.MovieDbHelper;
 
 
@@ -58,11 +59,11 @@ public class MovieDVDFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView adapterView, View view, int position, long l){
-                MovieDetails item = (MovieDetails) adapterView.getItemAtPosition(position);
-                if(!item.getmSelected()) {
-                    updateSelection(item.getMoviePoster());
-                    item.setmSelected(true);
-                    //mMovieAdapter.add(item);
+                Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+
+                if(Utils.addSelections(cursor.getString(MovieContract.COL_MOVIE_TITLE))){
+                    updateSelection(Utils.getBitmapFromByteArray(cursor.getBlob(MovieContract.COL_IMAGE)));
+
                 }
                 else{
                     Toast.makeText(getActivity().getApplicationContext(), "Already Selected",

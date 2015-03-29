@@ -1,7 +1,6 @@
 package com.example.russellborja.watchthismovie.fragments;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -48,7 +47,7 @@ public class MovieTheatresFragment extends Fragment {
                              Bundle savedInstanceState) {
         MovieDbHelper mDbHelper = new MovieDbHelper(getActivity().getApplicationContext());
 
-        final SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         Cursor cursor = db.rawQuery("select rowid _id,* from movies where in_theatres=1", null);
 
@@ -66,7 +65,12 @@ public class MovieTheatresFragment extends Fragment {
             public void onItemClick(AdapterView adapterView, View view, int position, long l){
                 //MovieDetails item = (MovieDetails) adapterView.getItemAtPosition(position);
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-                if(cursor.getInt(MovieContract.COL_IS_SELECTED) == 0) {
+
+                if(Utils.addSelections(cursor.getString(MovieContract.COL_MOVIE_TITLE))){
+                    updateSelection(Utils.getBitmapFromByteArray(cursor.getBlob(MovieContract.COL_IMAGE)));
+
+                }
+                /*if(cursor.getInt(MovieContract.COL_IS_SELECTED) == 0) {
                     updateSelection(Utils.getBitmapFromByteArray(cursor.getBlob(MovieContract.COL_IMAGE)));
                     ContentValues cv = new ContentValues();
                     cv.put(MovieContract.MovieEntry.COLUMN_IS_SELECTED, 1);
@@ -74,7 +78,7 @@ public class MovieTheatresFragment extends Fragment {
                             + "= ?", new String[]{cursor.getString(MovieContract.COL_MOVIE_TITLE)});
                     //item.setmSelected(true);
                     //mMovieAdapter.add(item);
-                }
+                }*/
                 else{
                     Toast.makeText(getActivity().getApplicationContext(), "Already Selected",
                             Toast.LENGTH_SHORT).show();
@@ -123,6 +127,7 @@ public class MovieTheatresFragment extends Fragment {
         //mMovieAdapter.setNotifyOnChange(true);
     }
 
+    // update selection boxes in selection fragment
     public void updateSelection(Bitmap poster){
         mCallback.onMovieClicked(poster);
     }

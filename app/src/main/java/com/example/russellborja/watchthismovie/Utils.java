@@ -14,6 +14,30 @@ import java.net.URL;
  */
 public class Utils {
 
+    public static String[] selectedViews = {"","","",""};
+
+    // array that keeps track of movies selected, returns true if valid selection
+    public static boolean addSelections(String title){
+        for(int i=0; i< selectedViews.length; i++){
+            if(selectedViews[i].equals(title)){
+                return false;
+            }
+            else if(selectedViews[i].equals("")) {
+                selectedViews[i] = title;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean removeAllSelections(){
+        for(int i=0; i< selectedViews.length; i++){
+            selectedViews[i]="";
+        }
+        return true;
+    }
+
+
     public static byte[] getByteArrayFromUrl(String urlString){
         Bitmap bitmap = null;
         byte[] data = null;
@@ -34,7 +58,10 @@ public class Utils {
     }
 
     public static Bitmap getBitmapFromByteArray(byte[] byteArray){
-        Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray,0, byteArray.length);
-        return bitmap;
+        if(byteArray != null) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+            return bitmap;
+        }
+        return null;
     }
 }
