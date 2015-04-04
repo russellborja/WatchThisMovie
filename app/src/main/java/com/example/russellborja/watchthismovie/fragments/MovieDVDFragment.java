@@ -1,11 +1,13 @@
 package com.example.russellborja.watchthismovie.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -53,7 +55,7 @@ public class MovieDVDFragment extends Fragment {
         Cursor cursor = db.rawQuery("select rowid _id,* from movies where in_theatres=0", null);
         int rows = cursor.getCount();
         if(rows == 0){
-            updateMovieList(Utils.getSortByString(getActivity())); //initialize db on startup
+            updateMovieList(Utils.getSortByString(getActivity()), getActivity()); //initialize db on startup
         }
 
 
@@ -97,20 +99,27 @@ public class MovieDVDFragment extends Fragment {
     }
 
     //also respond to changes in sort by setting
-    public void updateMovieList(String sortby){
-        FetchMovieData fetchMovieData = new FetchMovieData(this, getActivity().getApplicationContext());
+    public void updateMovieList(String sortby, Context context){
+        FetchMovieData fetchMovieData = new FetchMovieData(this, context);
         fetchMovieData.execute("DVD", sortby);
     }
 
-    public void update(Cursor results) {
+    public void update(Cursor results, Context context) {
         //mMovieAdapter.clear();
         // so notifyDataSetChanged() doesn't get called too often
         //mMovieAdapter.setNotifyOnChange(false);
-        if(results != null) {
+        if(mMovieAdapter == null){
+            mMovieAdapter = new MovieAdapter(getActivity(), results, 0);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService("layout_inflater");
+            View rootView = inflater.inflate(R.layout.fragment_movie_dvd, null, false);
+            ListView listView = (ListView) rootView.findViewById(R.id.listview_movies_dvd);
+            listView.setAdapter(mMovieAdapter);
+        }
+
+            Log.v(LOG_TAG, "Results cursor has rows: " + results.getCount());
             mMovieAdapter.changeCursor(results);
 
-        }
-//        mMovieAdapter.notifyDataSetChanged();
+        mMovieAdapter.notifyDataSetChanged();
 //        mMovieAdapter.setNotifyOnChange(true);
     }
 
@@ -134,7 +143,7 @@ public class MovieDVDFragment extends Fragment {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
-            updateMovieList(Utils.getSortByString(getActivity()));
+            updateMovieList(Utils.getSortByString(getActivity()), getActivity());
             return true;
         }
 

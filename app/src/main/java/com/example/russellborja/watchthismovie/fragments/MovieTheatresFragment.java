@@ -1,6 +1,7 @@
 package com.example.russellborja.watchthismovie.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -53,7 +54,7 @@ public class MovieTheatresFragment extends Fragment {
 
         int rows = cursor.getCount();
         if(rows == 0){
-            updateMovieList(Utils.getSortByString(getActivity())); //initialize database on startup
+            updateMovieList(Utils.getSortByString(getActivity()), getActivity()); //initialize database on startup
         }
 
         mMovieAdapter = new MovieAdapter(getActivity(), cursor, 0);
@@ -103,18 +104,23 @@ public class MovieTheatresFragment extends Fragment {
     }
 
     // update the movies in the list
-    public void updateMovieList(String sortby){
-        FetchMovieData fetchMovieData = new FetchMovieData(this, getActivity().getApplicationContext());
+    public void updateMovieList(String sortby, Context context){
+        FetchMovieData fetchMovieData = new FetchMovieData(this, context);
         fetchMovieData.execute("Theatre", sortby);
     }
 
-    public void update(Cursor results) {
-        //mMovieAdapter.clear();
-        // so notifyDataSetChanged() doesn't get called too often
-        //mMovieAdapter.setNotifyOnChange(false);
+    public void update(Cursor results, Context context) {
         if(results != null) {
-            Log.v(LOG_TAG, "Results cursor has rows: " + results.getCount());
-            mMovieAdapter.changeCursor(results);
+            if(mMovieAdapter == null){
+                mMovieAdapter = new MovieAdapter(getActivity(), results, 0);
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService("layout_inflater");
+                View rootView = inflater.inflate(R.layout.fragment_movie_theatre, null, false);
+                ListView listView = (ListView) rootView.findViewById(R.id.listview_movies);
+                listView.setAdapter(mMovieAdapter);
+            }
+
+                Log.v(LOG_TAG, "Results cursor has rows: " + results.getCount());
+                mMovieAdapter.changeCursor(results);
 
         }
         mMovieAdapter.notifyDataSetChanged();
@@ -142,7 +148,7 @@ public class MovieTheatresFragment extends Fragment {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
-            updateMovieList(Utils.getSortByString(getActivity()));
+            updateMovieList(Utils.getSortByString(getActivity()), getActivity());
             return true;
         }
 

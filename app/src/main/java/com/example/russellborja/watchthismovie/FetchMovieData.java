@@ -57,8 +57,8 @@ public class FetchMovieData extends AsyncTask<String, Void, Cursor> {
         BufferedReader br = null;
         List<MovieDetails> movieDetailsList;
         Cursor cursor;
-
-
+        String movieType = params[0];
+        String sortby = params[1];
 
         try {
             final String TMDB_BASE_URL = "https://api.themoviedb.org/3/";
@@ -68,9 +68,30 @@ public class FetchMovieData extends AsyncTask<String, Void, Cursor> {
             final String RELEASE_DATE_START = "primary_release_date.gte";
             final String RELEASE_DATE_FINISH = "primary_release_date.lte";
             final String SORT_BY = "sort_by";
-            final String POPULARITY = "popularity.desc";
 
-            String dateStartStr, dateEndStr;
+            String dateStartStr, dateEndStr, sortByParam;
+
+            //get sortby param
+            switch(sortby){
+                case "Popularity":
+                    sortByParam = "popularity.desc";
+                    break;
+                case "Rating":
+                    sortByParam = "vote_average.desc";
+                    break;
+                case "Release Date":
+                    sortByParam = "primary_release_date.desc";
+                    break;
+                case "Box Office":
+                    sortByParam = "revenue.desc";
+                    break;
+                case "Title":
+                    sortByParam = "original_title.desc";
+                    break;
+                default:
+                    sortByParam = "popularity.desc";
+                    break;
+            }
 
             //Get current date and previous month's date
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -78,7 +99,7 @@ public class FetchMovieData extends AsyncTask<String, Void, Cursor> {
             String currentDateString = dateFormat.format(currentDate.getTime());
 
             //Dates for movies still in theatres
-            if(params[0].equals("Theatre")) {
+            if(movieType.equals("Theatre")) {
                 dateEndStr = currentDateString;
                 currentDate.add(Calendar.MONTH, -1);
                 dateStartStr = dateFormat.format(currentDate.getTime());
@@ -99,7 +120,7 @@ public class FetchMovieData extends AsyncTask<String, Void, Cursor> {
             Uri builtUri = Uri.parse(TMDB_BASE_URL + DISCOVER_MOVIE).buildUpon()
                     .appendQueryParameter(RELEASE_DATE_START, dateStartStr)
                     .appendQueryParameter(RELEASE_DATE_FINISH, dateEndStr)
-                    .appendQueryParameter(SORT_BY, POPULARITY)
+                    .appendQueryParameter(SORT_BY, sortByParam)
                     .appendQueryParameter(API_PARAM, API_KEY).build();
 
             Log.v(LOG_TAG, builtUri.toString());
@@ -160,9 +181,9 @@ public class FetchMovieData extends AsyncTask<String, Void, Cursor> {
     @Override
     protected void onPostExecute(Cursor results){
         if(mTheatreFragment != null)
-            mTheatreFragment.update(results);
+            mTheatreFragment.update(results, mContext);
         if(mDVDFragment != null)
-            mDVDFragment.update(results);
+            mDVDFragment.update(results, mContext);
     }
 
     private Cursor getMovieDataFromJSON(String jsonString) throws JSONException{
@@ -181,7 +202,11 @@ public class FetchMovieData extends AsyncTask<String, Void, Cursor> {
             JSONArray resultsList = rawData.getJSONArray(RESULTS);
             //List<MovieDetails> movieDetailsList = new ArrayList<MovieDetails>(resultsList.length());
 
-            //db.delete(MovieContract.MovieEntry.TABLE_NAME, null, null);
+            db.delete(MovieContract.MovieEntry.TABLE_NAME, null, null);
+            db.execSQL("VACUUM");
+//            db.delete(MovieContract.MovieEntry.TABLE_NAME,
+//                    MovieContract.MovieEntry.COLUMN_IN_THEATRES + "=" + (isInTheatres ? 1 : 0), null
+//                );
 
             for (int i = 0; i < resultsList.length(); i++) {
                 String title, releaseDate, bitmapUrl;
@@ -237,6 +262,7 @@ public class FetchMovieData extends AsyncTask<String, Void, Cursor> {
         else{
             result = db.rawQuery("select rowid _id,* from " + MovieContract.MovieEntry.TABLE_NAME +
                     " where " + MovieContract.MovieEntry.COLUMN_IN_THEATRES + "=1", null);
+            Log.v(LOG_TAG, "Number of rows in result cursor:" +result.getCount());
         }
         return result;
     }

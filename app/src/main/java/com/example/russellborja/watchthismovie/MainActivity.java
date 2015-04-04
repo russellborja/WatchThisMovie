@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
@@ -22,7 +23,9 @@ public class MainActivity extends ActionBarActivity implements
         MovieDVDFragment.onDVDClickedListener{
 
     ViewPager viewpager;
+    PagerAdapter pagerAdapter;
     private String mSortBy;
+    private final String LOG_TAG = "Main Activity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +41,7 @@ public class MainActivity extends ActionBarActivity implements
 
 
 
-        PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
+        pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         viewpager.setAdapter(pagerAdapter);
 
 
@@ -56,13 +59,16 @@ public class MainActivity extends ActionBarActivity implements
         super.onResume();
         String sortBy = Utils.getSortByString(this);
         if(sortBy !=null && !sortBy.equals(mSortBy)){
-            MovieTheatresFragment mf = (MovieTheatresFragment) getSupportFragmentManager()
-                    .findFragmentById(R.layout.fragment_movie_theatre);
-            MovieDVDFragment df = (MovieDVDFragment)getSupportFragmentManager()
-                    .findFragmentById((R.layout.fragment_movie_dvd));
-            if(mf !=null){
-                mf.updateMovieList(sortBy);
-                df.updateMovieList(sortBy);
+            int currentPage = viewpager.getCurrentItem();
+            Fragment currentFragment = pagerAdapter.getItem(currentPage);
+            if(currentFragment instanceof MovieTheatresFragment){
+                ((MovieTheatresFragment) currentFragment).updateMovieList(sortBy, getApplicationContext());
+            }
+            else if(currentFragment instanceof MovieDVDFragment){
+                ((MovieDVDFragment) currentFragment).updateMovieList(sortBy, getApplicationContext());
+            }
+            else{
+                Log.e(LOG_TAG, "Cannot find current fragment");
             }
             mSortBy = sortBy;
         }
