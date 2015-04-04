@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,10 +55,6 @@ public class MovieAdapter extends CursorAdapter {
 
 
 
-        Log.v(LOG_TAG, "Movie title: " + movieTitle);
-        for(String column: cursor.getColumnNames()) {
-            Log.v(LOG_TAG, column);
-        }
         ViewHolder viewHolder = (ViewHolder) view.getTag();
         viewHolder.titleTextView.setText(movieTitle);
         viewHolder.titleTextView.setTypeface(null, Typeface.BOLD);

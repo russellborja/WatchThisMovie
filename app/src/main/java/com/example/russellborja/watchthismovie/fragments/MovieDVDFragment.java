@@ -51,6 +51,12 @@ public class MovieDVDFragment extends Fragment {
         MovieDbHelper mDbHelper = new MovieDbHelper(getActivity().getApplicationContext());
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select rowid _id,* from movies where in_theatres=0", null);
+        int rows = cursor.getCount();
+        if(rows == 0){
+            updateMovieList(Utils.getSortByString(getActivity())); //initialize db on startup
+        }
+
+
         mMovieAdapter = new MovieAdapter(getActivity(), cursor, 0);
         View rootView = inflater.inflate(R.layout.fragment_movie_dvd, container, false);
         ListView listView = (ListView) rootView.findViewById(R.id.listview_movies_dvd);
@@ -90,10 +96,10 @@ public class MovieDVDFragment extends Fragment {
         }
     }
 
-
-    public void updateMovieList(){
+    //also respond to changes in sort by setting
+    public void updateMovieList(String sortby){
         FetchMovieData fetchMovieData = new FetchMovieData(this, getActivity().getApplicationContext());
-        fetchMovieData.execute("DVD");
+        fetchMovieData.execute("DVD", sortby);
     }
 
     public void update(Cursor results) {
@@ -128,7 +134,7 @@ public class MovieDVDFragment extends Fragment {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
-            updateMovieList();
+            updateMovieList(Utils.getSortByString(getActivity()));
             return true;
         }
 

@@ -1,7 +1,10 @@
 package com.example.russellborja.watchthismovie;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
@@ -73,4 +76,11 @@ public class Utils {
         }
         return null;
     }
+
+    public static String getSortByString(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getString(context.getString(R.string.pref_units_key),
+                context.getString(R.string.pref_units_default));
+    }
+
 }

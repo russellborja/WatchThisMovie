@@ -51,9 +51,10 @@ public class MovieTheatresFragment extends Fragment {
 
         Cursor cursor = db.rawQuery("select rowid _id,* from movies where in_theatres=1", null);
 
-        //debugging
         int rows = cursor.getCount();
-        Log.v(LOG_TAG, "Number of rows in theatres: " + rows);
+        if(rows == 0){
+            updateMovieList(Utils.getSortByString(getActivity())); //initialize database on startup
+        }
 
         mMovieAdapter = new MovieAdapter(getActivity(), cursor, 0);
         View rootView = inflater.inflate(R.layout.fragment_movie_theatre, container, false);
@@ -96,9 +97,15 @@ public class MovieTheatresFragment extends Fragment {
         }
     }
 
-    public void updateMovieList(){
+    // respond to changes in sort by setting
+    public void onSortByChanged(String sortby){
+
+    }
+
+    // update the movies in the list
+    public void updateMovieList(String sortby){
         FetchMovieData fetchMovieData = new FetchMovieData(this, getActivity().getApplicationContext());
-        fetchMovieData.execute("Theatre");
+        fetchMovieData.execute("Theatre", sortby);
     }
 
     public void update(Cursor results) {
@@ -135,7 +142,7 @@ public class MovieTheatresFragment extends Fragment {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
-            updateMovieList();
+            updateMovieList(Utils.getSortByString(getActivity()));
             return true;
         }
 

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_sort_by_label" translatable="false">Sort By:</string>
+    <string-array name="pref_sort_by_units">
+        <item>Popularity</item>
+        <item>Rating</item>
+        <item>Release Date</item>
+        <item>Box Office</item>
+        <item>Title</item>
+    </string-array>
+    <string-array name="pref_sort_by_values">
+        <item>Popularity</item>
+        <item>Rating</item>
+        <item>Release Date</item>
+        <item>Box Office</item>
+        <item>Title</item>
+    </string-array>
+    <string name="pref_units_key" translatable="false">sortby</string>
+    <string name="pref_units_default" translatable="false">Popularity</string>
+    <string name="pref_units_rating" translatable="false">Rating</string>
+    <string name="pref_units_release_date" translatable="false">Release Date</string>
+    <string name="pref_units_box_office" translatable="false">Box Office</string>
+    <string name="pref_units_title" translatable="false">Title</string>
+    <string name="pref_units_popularity" translatable="false">Popularity</string>
+
+</resources>

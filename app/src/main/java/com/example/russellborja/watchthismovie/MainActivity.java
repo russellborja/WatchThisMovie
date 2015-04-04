@@ -1,5 +1,6 @@
 package com.example.russellborja.watchthismovie;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,11 +22,13 @@ public class MainActivity extends ActionBarActivity implements
         MovieDVDFragment.onDVDClickedListener{
 
     ViewPager viewpager;
+    private String mSortBy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mSortBy = Utils.getSortByString(this);
 
         FrameLayout layoutMain = (FrameLayout) findViewById( R.id.main_frame_layout);
         layoutMain.getForeground().setAlpha( 0);
@@ -48,7 +51,23 @@ public class MainActivity extends ActionBarActivity implements
         }
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        String sortBy = Utils.getSortByString(this);
+        if(sortBy !=null && !sortBy.equals(mSortBy)){
+            MovieTheatresFragment mf = (MovieTheatresFragment) getSupportFragmentManager()
+                    .findFragmentById(R.layout.fragment_movie_theatre);
+            MovieDVDFragment df = (MovieDVDFragment)getSupportFragmentManager()
+                    .findFragmentById((R.layout.fragment_movie_dvd));
+            if(mf !=null){
+                mf.updateMovieList(sortBy);
+                df.updateMovieList(sortBy);
+            }
+            mSortBy = sortBy;
+        }
 
+    }
 
 
 
@@ -73,6 +92,8 @@ public class MainActivity extends ActionBarActivity implements
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent startSettingsActivity = new Intent(this, SettingsActivity.class);
+            startActivity(startSettingsActivity);
             return true;
         }
 
